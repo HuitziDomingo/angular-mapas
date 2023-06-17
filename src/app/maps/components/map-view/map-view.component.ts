@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core'
-import { PlacesService } from '../../services/places.service'
+import { PlacesService, MapService } from '../../services'
 import { Map, Popup, Marker } from 'mapbox-gl'
 
 @Component({
@@ -12,7 +12,10 @@ export class MapViewComponent implements AfterViewInit {
   @ViewChild('mapDiv')
   mapDivElement!: ElementRef
 
-  constructor(private readonly placesService: PlacesService) { }
+  constructor(
+    private readonly placesService: PlacesService,
+    private readonly mapService: MapService,
+  ) { }
 
   ngAfterViewInit(): void {
     if (!this.placesService.useLocation) throw new Error('No existe la ubicacion en el mapa.')
@@ -34,6 +37,10 @@ export class MapViewComponent implements AfterViewInit {
       setLngLat(this.placesService.useLocation).
       setPopup(popup).
       addTo(map)
+
+
+    this.mapService.setMap(map)
+
   }
 
 
